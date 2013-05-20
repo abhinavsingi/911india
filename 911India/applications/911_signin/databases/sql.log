@@ -1,0 +1,94 @@
+timestamp: 2013-05-16T23:30:57.261948
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2013-05-16T23:30:57.477690
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-05-16T23:30:57.666766
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2013-05-16T23:30:57.866804
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2013-05-16T23:30:58.087707
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-05-16T23:30:58.356747
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2013-05-17T00:08:16.199677
+CREATE TABLE auth_users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    username CHAR(32),
+    email CHAR(128),
+    password CHAR(512),
+    registration_key CHAR(128)
+);
+success!
+timestamp: 2013-05-17T00:18:16.268106
+ALTER TABLE auth_users ADD first_name CHAR(512);
+timestamp: 2013-05-17T00:18:16.555505
+ALTER TABLE auth_users ADD last_name CHAR(512);
+timestamp: 2013-05-17T15:48:54.889038
+CREATE TABLE 911_users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(128),
+    password CHAR(512),
+    registration_key CHAR(128)
+);
+timestamp: 2013-05-17T16:00:11.026119
+CREATE TABLE 911_users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+timestamp: 2013-05-17T16:04:06.403994
+ALTER TABLE auth_users ADD registration_id CHAR(512);
+timestamp: 2013-05-17T16:04:06.835076
+ALTER TABLE auth_users ADD reset_password_key CHAR(512);
