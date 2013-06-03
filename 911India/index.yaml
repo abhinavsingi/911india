@@ -1,0 +1,13 @@
+indexes:
+
+- kind: message
+  properties:
+  - name: sender
+  - name: __key__
+    direction: desc
+
+- kind: message
+  properties:
+  - name: reciever
+  - name: __key__
+    direction: desc

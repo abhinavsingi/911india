@@ -1,0 +1,19 @@
+{{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{extend 'layout.html'}}
+
+<div class='msg_compose_form'>
+	{{=form}}
+</div>
+
+{{block left_sidebar}}
+<ul>
+	<h5><li><a href='/911_signin/default/index'>HOME</a></li></h5>
+	<h5><li>Messages</li></h5>
+	<ul>
+		{{ctr=db(db.auth_users.id == auth.user.id).select().first().unread_ctr}}
+		<li>{{=A('INBOX', _href='/911_signin/default/inbox')}}<span class='notify'> ({{=ctr}})</span></li>
+		<li>{{=A('Compose Mail', _href='/911_signin/default/compose')}}</li>
+		<li>{{=A('Sent Mail', _href='/911_signin/default/outbox')}}</li>
+	</ul>
+</ul>
+{{end}}

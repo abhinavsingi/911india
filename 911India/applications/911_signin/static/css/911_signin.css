@@ -1,0 +1,14 @@
+.msg_read
+{
+	background-color: #bbb;
+}
+
+.msg_unread
+{
+	background-color: #eee;
+}
+
+.notify
+{
+	color: red;
+}
