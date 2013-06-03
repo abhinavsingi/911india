@@ -1193,9 +1193,14 @@ class Auth(object):
             
         if self.user_id:
             logout=A(T('Logout'),_href=action+'/logout'+lo_next)
-            profile=A(T('Profile'),_href=action+'/profile'+next)
+            profile=A(T('Profile'),_href='/911_signin/default/profile')
             password=A(T('Password'),_href=action+'/change_password'+next)
-            bar = SPAN(prefix,self.user.first_name,s1, logout,s3,_class='auth_navbar')
+            row=self.db(self.db.users.username==self.user.username).select().first()
+            if row==None:
+                first_name=self.user.first_name
+            else:
+                first_name=row.first_name
+            bar = SPAN(prefix,first_name,s1, logout,s3,_class='auth_navbar')
             if not 'profile' in self.settings.actions_disabled:
                 bar.insert(4, s2)
                 bar.insert(5, profile)

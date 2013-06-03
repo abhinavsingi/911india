@@ -12,6 +12,7 @@
 from gluon.contrib.login_methods.rpx_account import use_janrain
 from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
 
+@auth.requires_login()
 def index():
     """
     example action using the internationalization operator T and flash
@@ -79,3 +80,63 @@ def data():
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
     """
     return dict(form=crud())
+
+
+@auth.requires_login()
+def profile():
+	tmp_usr=db(db.users.username == auth.user.username)(db.users.email == auth.user.email).select().first()
+	if tmp_usr==None:
+		db.users.first_name.default=auth.user.first_name
+		db.users.last_name.default=auth.user.last_name
+		db.users.username.default=auth.user.username
+		db.users.email.default=auth.user.email
+		form=SQLFORM(db.users)
+
+	else:
+		db.users.first_name.default=tmp_usr.first_name
+		db.users.last_name.default=tmp_usr.last_name
+		db.users.username.default=tmp_usr.username
+		db.users.email.default=tmp_usr.email
+		form=SQLFORM(db.users,tmp_usr.id,showid=False)
+
+	if form.process().accepted:
+		response.flash='Profile updated'
+	return dict(form=form)
+
+@auth.requires_login()
+def compose():
+	db.message.sender.default=auth.user.username
+	db.message.read.default=False
+	form=SQLFORM(db.message)
+
+	if form.process().accepted:
+		response.flash='Message Sent'
+		row = db(db.auth_users.username == form.vars.reciever).select().first()
+		if row:
+			ctr=row.unread_ctr+1
+			db.auth_users[row.id] = dict(unread_ctr=ctr)
+	return dict(form=form)
+
+@auth.requires_login()
+def inbox():
+	inbox=db(db.message.reciever == auth.user.username).select(db.message.id, db.message.sender,db.message.subject,db.message.read, orderby=~db.message.id )
+	return dict(inbox=inbox)
+
+@auth.requires_login()
+def message():
+	mail = db.message(request.args(0))
+	if mail.read == False:
+		db.message[mail.id] = dict(read=True)
+		ctr = db.auth_users(auth.user.id).unread_ctr-1
+		db.auth_users[auth.user.id]	= dict(unread_ctr=ctr)
+	return dict(mail=mail)
+
+@auth.requires_login()
+def outbox():
+	outbox=db(db.message.sender == auth.user.username).select(db.message.id, db.message.reciever,db.message.subject, db.message.read, orderby=~db.message.id )
+	return dict(outbox=outbox)
+
+@auth.requires_login()
+def sent_message():
+	mail = db.message(request.args(0))
+	return dict(mail=mail)

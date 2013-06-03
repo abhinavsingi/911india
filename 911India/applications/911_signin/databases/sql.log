@@ -92,3 +92,49 @@ timestamp: 2013-05-17T16:04:06.403994
 ALTER TABLE auth_users ADD registration_id CHAR(512);
 timestamp: 2013-05-17T16:04:06.835076
 ALTER TABLE auth_users ADD reset_password_key CHAR(512);
+timestamp: 2013-05-24T22:53:02.066140
+CREATE TABLE 911_users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(128)
+);
+timestamp: 2013-05-24T22:54:07.372437
+CREATE TABLE 911_users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(128)
+);
+timestamp: 2013-05-24T22:59:02.053482
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(128)
+);
+success!
+timestamp: 2013-06-01T17:57:03.828759
+CREATE TABLE message(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender CHAR(32),
+    reciever CHAR(32)
+);
+success!
+timestamp: 2013-06-01T18:07:58.807541
+ALTER TABLE message ADD message CHAR(1000);
+timestamp: 2013-06-01T18:07:59.091975
+ALTER TABLE message ADD subject CHAR(200);
+timestamp: 2013-06-02T00:08:27.118014
+ALTER TABLE message ADD read CHAR(1);
+timestamp: 2013-06-03T16:46:05.076277
+ALTER TABLE message ADD read_f CHAR(1);
+timestamp: 2013-06-03T17:10:27.218364
+ALTER TABLE users ADD unread_ctr CHAR(512);
+timestamp: 2013-06-03T17:13:38.505796
+ALTER TABLE auth_users ADD unread_ctr CHAR(512);
+timestamp: 2013-06-03T21:24:26.844836
+ALTER TABLE message ADD attach CHAR(512);

@@ -40,7 +40,7 @@ response.generic_patterns = ['*'] if request.is_local else []
 #########################################################################
 
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
-auth = Auth(db, hmac_key=Auth.get_or_create_key())
+auth = Auth(db=db, hmac_key=Auth.get_or_create_key())
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
@@ -48,12 +48,12 @@ auth.define_tables()
 
 ## configure email
 mail=auth.settings.mailer
-mail.settings.server = 'smtp.gmail.com:587' ## or any other smtp server
-mail.settings.sender = 'emailid'
-mail.settings.login = 'emailusername:passwd'
+mail.settings.server = 'smtp.gmail.com:587'
+mail.settings.sender = 'chandantheshadow@gmail.com'
+mail.settings.login = 'chandantheshadow:fireinthehole27'
 
 ## configure auth policy
-auth.settings.registration_requires_verification = True
+auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
@@ -83,8 +83,23 @@ auth.settings.table_user = db.define_table(
 	"auth_users",
 	Field('first_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
 	Field('last_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
-	Field('username', length=32, requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
-	Field('email', length=128,default='', requires = [IS_EMAIL(), IS_NOT_EMPTY()]),
+	Field('username', length=32, unique = True, requires = [IS_NOT_EMPTY(), IS_LENGTH(32)]),
+	Field('email', length=128, unique = True, default='', requires = [IS_EMAIL(), IS_NOT_EMPTY()]),
 	Field('password', 'password', readable=False, label='Password', requires=CRYPT(digest_alg='sha512')), 
-	Field('registration_key', length=128,
-	writable=False, readable=False, default=''))
+	Field('registration_key', length=128, writable=False, readable=False, default=''),
+	Field('unread_ctr', 'integer', default=0, writable=False, readable=False))
+	
+db.define_table('users',
+	Field('first_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
+	Field('last_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
+	Field('username', length=32, writable=False),
+	Field('email', writable=False))
+
+db.define_table('message',
+    Field('sender', length=32, writable=False, readable=False),
+    Field('reciever', length=32, requires = [IS_NOT_EMPTY(), IS_LENGTH(32)]),
+	Field('subject', length=200, requires = [IS_LENGTH(200)]),
+	Field('message', 'text', length=1000, requires = [IS_LENGTH(1000)]),
+	Field('read', 'boolean', writable=False, readable=False),
+	Field('attach', 'upload')
+	)
