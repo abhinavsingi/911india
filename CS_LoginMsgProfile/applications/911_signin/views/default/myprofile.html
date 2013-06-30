@@ -1,11 +1,5 @@
-
-{{extend 'profile_layout.html'}}
-{{if request.args(0) == auth.user.username:}}
+{{right_sidebar_enabled=True}}
 {{extend 'myprofile_layout.html'}}
-{{else:}}
-{{extend 'profile_layout.html'}}
-{{pass}}
-{{if request.args(0) == auth.user.username:}}
 <div class='profile-page'>
 	<h4>ABOUT</h4>
 	{{=form}}
@@ -41,18 +35,13 @@
 	</div>	
 </div>
 
-<script src="{{=URL('static','js/911_profile.js')}}"></script>
-
-{{else:}}
-
-<div class='user-profile'>
-	{{user = db(db.auth_users.username == request.args(0)).select()}}
-	{{if user:}}
-	{{=user.first().username}}
-	{{else:}}
-	BYE
-	{{pass}}
-
+{{block right_sidebar}}
+<div class='right sidebar'>
+	<ul>
+		<li>Connections go here</li>
+		<li>Links go here</li>
+	</ul>
 </div>
+{{end}}
 
-{{pass}}
+<script src="{{=URL('static','js/911_profile.js')}}"></script>

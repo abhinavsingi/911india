@@ -49,8 +49,8 @@ auth.define_tables()
 ## configure email
 mail=auth.settings.mailer
 mail.settings.server = 'smtp.gmail.com:587'
-mail.settings.sender = 'chandantheshadow@gmail.com'
-mail.settings.login = 'chandantheshadow:fireinthehole27'
+mail.settings.sender = 'email@xyz.com'
+mail.settings.login = 'username:passwd'
 
 ## configure auth policy
 auth.settings.registration_requires_verification = False
@@ -89,11 +89,40 @@ auth.settings.table_user = db.define_table(
 	Field('registration_key', length=128, writable=False, readable=False, default=''),
 	Field('unread_ctr', 'integer', default=0, writable=False, readable=False))
 	
-db.define_table('users',
+db.define_table('basic_info',
+	Field('prefix', requires = IS_IN_SET(['Mr.', 'Mrs.', 'Dr.'])),
 	Field('first_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
 	Field('last_name', requires = [IS_NOT_EMPTY(), IS_LENGTH(32), IS_ALPHANUMERIC()]),
-	Field('username', length=32, writable=False),
-	Field('email', writable=False))
+	Field('suffix', requires = [IS_LENGTH(32), IS_ALPHANUMERIC()]),
+	Field('username', length=32, writable=False, readable=False),
+	Field('email', writable=False),
+	Field('email_share_with', requires = IS_IN_SET(["Don't Share", "Only my network", "Everyone"])),
+	Field('phone_no', 'integer', requires = [IS_LENGTH(11,11), IS_ALPHANUMERIC()]),
+	Field('phone_share_with', requires = IS_IN_SET(["Don't Share", "Only my network", "Everyone"])),
+	Field('mobile_no', 'integer', requires = [IS_LENGTH(10,10), IS_ALPHANUMERIC()]),
+	Field('chat_im', requires = [IS_LENGTH(32)]),
+	Field('current_location', requires = [IS_LENGTH(150)]),
+	Field('hometown', requires = [IS_LENGTH(150)]))
+	
+db.define_table('experience',
+	Field('username', length=32, writable=False, readable=False),
+	Field('post', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('hospital', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('city', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('country', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('start_date', 'date', requires = [IS_NOT_EMPTY(), IS_DATE()]),
+	Field('end_date', 'date', requires = [IS_NOT_EMPTY(), IS_DATE()]),
+	Field('description', 'text', length=500))
+
+db.define_table('education',
+	Field('username', length=32, writable=False, readable=False),
+	Field('degree', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('institute', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('city', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('country', requires = [IS_NOT_EMPTY(), IS_LENGTH(64)]),
+	Field('start_date', 'date', requires = [IS_NOT_EMPTY(), IS_DATE()]),
+	Field('end_date', 'date', requires = [IS_NOT_EMPTY(), IS_DATE()]),
+	Field('description', 'text', length=500))
 
 db.define_table('message',
     Field('sender', length=32, writable=False, readable=False),
@@ -103,3 +132,7 @@ db.define_table('message',
 	Field('read', 'boolean', writable=False, readable=False),
 	Field('attach', 'upload')
 	)
+
+db.define_table('profile_pic',
+	Field('uname', readable=False, writable=False),
+	Field('file', 'upload'))

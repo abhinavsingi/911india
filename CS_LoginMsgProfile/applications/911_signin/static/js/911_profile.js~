@@ -1,0 +1,15 @@
+jQuery(document).ready(function($) {
+	$("#add-experience").hide();
+	$("#add-experience-trigger").bind('mousedown', function(event) {
+		$("#add-experience").slideDown("slow");
+		$("#add-experience-trigger").hide();
+	});
+});
+
+jQuery(document).ready(function($) {
+	$("#add-experience").hide();
+	$("#add-experience-trigger").bind('mousedown', function(event) {
+		$("#add-experience").slideDown("slow");
+		$("#add-experience-trigger").hide();
+	});
+});

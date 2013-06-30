@@ -81,107 +81,35 @@ def data():
     """
     return dict(form=crud())
 
-@auth.requires_login()
-def myprofile():
-	tmp_usr=db(db.basic_info.username == auth.user.username)(db.basic_info.email == auth.user.email).select().first()
-	if tmp_usr==None:
-		db.basic_info.email.default=auth.user.email
-		form=SQLFORM(db.basic_info, submit_button='Create Profile')
-		form.vars.first_name=auth.user.first_name
-		form.vars.last_name=auth.user.last_name
-		form.vars.username=auth.user.username
-
-	else:
-		form=SQLFORM(db.basic_info,tmp_usr.id,showid=False, submit_button='Update Profile')
-
-	form.vars.prefix = 'Mr.'
-	form.vars.email_share_with = 'Only my network'
-	form.vars.phone_share_with = 'Only my network'
-
-	db.experience.username.default=auth.user.username
-	db.education.username.default=auth.user.username
-	form2=SQLFORM(db.experience, submit_button='Add experience')
-	form3=SQLFORM(db.education, submit_button='Add education')
-
-	if form.process().accepted:
-		response.flash='Profile updated'
-
-	if form2.process().accepted:
-		response.flash='Experience added'
-
-	if form3.process().accepted:
-		response.flash='Education added'
-
-	experience=db(db.experience.username == auth.user.username).select()
-	education=db(db.education.username == auth.user.username).select()
-
-	return dict(form=form, form2=form2, form3=form3, experience=experience, education=education)
-
-
 
 @auth.requires_login()
 def profile():
-	uname = request.args(0)
-	if uname == auth.user.username:
-		tmp_usr=db(db.basic_info.username == auth.user.username)(db.basic_info.email == auth.user.email).select().first()
-		if tmp_usr==None:
-			db.basic_info.email.default=auth.user.email
-			form=SQLFORM(db.basic_info, submit_button='Create Profile')
-			form.vars.first_name=auth.user.first_name
-			form.vars.last_name=auth.user.last_name
-			form.vars.username=auth.user.username
+	tmp_usr=db(db.basic_info.username == auth.user.username)(db.basic_info.email == auth.user.email).select().first()
+	if tmp_usr==None:
+		db.basic_info.first_name.default=auth.user.first_name
+		db.basic_info.last_name.default=auth.user.last_name
+		db.basic_info.username.default=auth.user.username
+		db.basic_info.email.default=auth.user.email
+		form=SQLFORM(db.basic_info)
 
-		else:
-			form=SQLFORM(db.basic_info,tmp_usr.id,showid=False, submit_button='Update Profile')
-
-		form.vars.prefix = 'Mr.'
-		form.vars.email_share_with = 'Only my network'
-		form.vars.phone_share_with = 'Only my network'
-
-		db.experience.username.default=auth.user.username
-		db.education.username.default=auth.user.username
-		form2=SQLFORM(db.experience, submit_button='Add experience')
-		form3=SQLFORM(db.education, submit_button='Add education')
-
-		if form.process().accepted:
-			response.flash='Profile updated'
-
-		if form2.process().accepted:
-			response.flash='Experience added'
-
-		if form3.process().accepted:
-			response.flash='Education added'
-
-		experience=db(db.experience.username == auth.user.username).select()
-		education=db(db.education.username == auth.user.username).select()
-
-		return dict(form=form, form2=form2, form3=form3, experience=experience, education=education)
-	
 	else:
-		return dict()
+		db.basic_info.first_name.default=tmp_usr.first_name
+		db.basic_info.last_name.default=tmp_usr.last_name
+		db.basic_info.username.default=tmp_usr.username
+		db.basic_info.email.default=tmp_usr.email
+		form=SQLFORM(db.basic_info,tmp_usr.id,showid=False)
 
-
-@auth.requires_login()
-def changepicture():
-	tmp_pic=db(db.profile_pic.uname == auth.user.username).select()
-	if tmp_pic:
-		form=SQLFORM(db.profile_pic,tmp_pic.first().id,showid=False, submit_button='Upload Picture')
-	else:
-		db.profile_pic.uname.default=auth.user.username
-		form=SQLFORM(db.profile_pic, submit_button='Upload Picture')
-
+	form.vars.prefix = 'Mr.'
 	if form.process().accepted:
-		response.flash='Image uploaded'
-		redirect(URL('myprofile'))
+		response.flash='Profile updated'
 
 	return dict(form=form)
 
-
 @auth.requires_login()
 def compose():
+	db.message.sender.default=auth.user.username
+	db.message.read.default=False
 	form=SQLFORM(db.message)
-	form.vars.sender=auth.user.username
-	form.vars.read=False
 
 	if form.process().accepted:
 		response.flash='Message Sent'

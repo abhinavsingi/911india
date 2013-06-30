@@ -138,3 +138,73 @@ timestamp: 2013-06-03T17:13:38.505796
 ALTER TABLE auth_users ADD unread_ctr CHAR(512);
 timestamp: 2013-06-03T21:24:26.844836
 ALTER TABLE message ADD attach CHAR(512);
+timestamp: 2013-06-29T14:50:29.109244
+CREATE TABLE 911_bassic_info(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(512)
+);
+timestamp: 2013-06-29T14:54:48.417899
+CREATE TABLE basic_info(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(512),
+    last_name CHAR(512),
+    username CHAR(32),
+    email CHAR(512)
+);
+success!
+timestamp: 2013-06-29T16:05:24.389757
+ALTER TABLE basic_info ADD suffix CHAR(512);
+timestamp: 2013-06-29T16:05:24.715884
+ALTER TABLE basic_info ADD prefix CHAR(512);
+timestamp: 2013-06-29T16:25:09.812336
+ALTER TABLE basic_info ADD hometown CHAR(512);
+timestamp: 2013-06-29T16:25:10.094718
+ALTER TABLE basic_info ADD phone_no INTEGER;
+timestamp: 2013-06-29T16:25:10.371893
+ALTER TABLE basic_info ADD mobile_no INTEGER;
+timestamp: 2013-06-29T16:25:10.608596
+ALTER TABLE basic_info ADD chat_im CHAR(512);
+timestamp: 2013-06-29T16:25:10.872499
+ALTER TABLE basic_info ADD current_locatioin CHAR(512);
+timestamp: 2013-06-29T16:25:36.166448
+ALTER TABLE basic_info ADD current_location CHAR(512);
+timestamp: 2013-06-30T00:32:32.003938
+ALTER TABLE basic_info ADD phone_share_with CHAR(512);
+timestamp: 2013-06-30T00:32:32.298574
+ALTER TABLE basic_info ADD email_share_with CHAR(512);
+timestamp: 2013-06-30T01:10:28.395979
+CREATE TABLE experience(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(32),
+    post CHAR(512),
+    hospital CHAR(512),
+    city CHAR(512),
+    country CHAR(512),
+    start_date DATE,
+    end_date DATE,
+    description TEXT
+);
+success!
+timestamp: 2013-06-30T01:19:16.249039
+CREATE TABLE education(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(32),
+    degree CHAR(512),
+    institute CHAR(512),
+    city CHAR(512),
+    country CHAR(512),
+    start_date DATE,
+    end_date DATE,
+    description TEXT
+);
+success!
+timestamp: 2013-06-30T15:55:46.623906
+CREATE TABLE profile_pic(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uname CHAR(512),
+    file CHAR(512)
+);
+success!

@@ -12,3 +12,59 @@
 {
 	color: red;
 }
+
+.trigger
+{
+	color: blue;
+}
+
+.header .sixteen.columns
+{
+	height: 150px;
+	background-image: url('../images/cover.jpg');
+	background-size: 940px 150px;
+}
+
+.header .sixteen.columns .profile-pic
+{
+	float: left;
+	height: 100px;
+	width: 100px;
+	margin-left: 50px;
+	margin-top: 20px;
+}
+
+.header .sixteen.columns .profile-pic img
+{
+	height: 100px;
+	width: 100px;
+	border-radius: 100px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: #999;
+}
+
+.header .sixteen.columns .connections
+{
+	padding-top: 20px;
+	margin-right: 20px;
+	float: right;
+	color: #ddd;
+}
+
+.header .sixteen.columns .changecover
+{
+	padding-right: 10px;
+	padding-bottom: 40px;
+}
+
+.right.sidebar
+{
+	height: 200px;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	padding-right: 20px;
+	padding-top: 20px;
+	text-align: center;
+}
