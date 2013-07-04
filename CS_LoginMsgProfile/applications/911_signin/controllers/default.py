@@ -119,7 +119,6 @@ def myprofile():
 
 
 
-@auth.requires_login()
 def profile():
 	uname = request.args(0)
 	user_obj = db(db.auth_users.username == uname).select()
