@@ -122,43 +122,11 @@ def myprofile():
 @auth.requires_login()
 def profile():
 	uname = request.args(0)
-	if uname == auth.user.username:
-		tmp_usr=db(db.basic_info.username == auth.user.username)(db.basic_info.email == auth.user.email).select().first()
-		if tmp_usr==None:
-			db.basic_info.email.default=auth.user.email
-			form=SQLFORM(db.basic_info, submit_button='Create Profile')
-			form.vars.first_name=auth.user.first_name
-			form.vars.last_name=auth.user.last_name
-			form.vars.username=auth.user.username
-
-		else:
-			form=SQLFORM(db.basic_info,tmp_usr.id,showid=False, submit_button='Update Profile')
-
-		form.vars.prefix = 'Mr.'
-		form.vars.email_share_with = 'Only my network'
-		form.vars.phone_share_with = 'Only my network'
-
-		db.experience.username.default=auth.user.username
-		db.education.username.default=auth.user.username
-		form2=SQLFORM(db.experience, submit_button='Add experience')
-		form3=SQLFORM(db.education, submit_button='Add education')
-
-		if form.process().accepted:
-			response.flash='Profile updated'
-
-		if form2.process().accepted:
-			response.flash='Experience added'
-
-		if form3.process().accepted:
-			response.flash='Education added'
-
-		experience=db(db.experience.username == auth.user.username).select()
-		education=db(db.education.username == auth.user.username).select()
-
-		return dict(form=form, form2=form2, form3=form3, experience=experience, education=education)
-	
-	else:
-		return dict()
+	user_obj = db(db.auth_users.username == uname).select()
+	profile_obj = db(db.basic_info.username == uname).select()
+	exp_obj = db(db.experience.username == uname).select()
+	edu_obj = db(db.education.username == uname).select()
+	return dict(user=user_obj, profile=profile_obj, experience=exp_obj, education=edu_obj)
 
 
 @auth.requires_login()

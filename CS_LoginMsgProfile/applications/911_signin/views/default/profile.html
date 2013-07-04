@@ -1,58 +1,60 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+
+{{if user:}}
 
 {{extend 'profile_layout.html'}}
-{{if request.args(0) == auth.user.username:}}
-{{extend 'myprofile_layout.html'}}
-{{else:}}
-{{extend 'profile_layout.html'}}
-{{pass}}
-{{if request.args(0) == auth.user.username:}}
-<div class='profile-page'>
-	<h4>ABOUT</h4>
-	{{=form}}
-	<div class='experience'>
-		<h4>EXPERIENCE</h4>
-		{{for row in experience:}}
-		<h5>{{=row.post}}</h5>
-		<div id='place'>{{=row.hospital}} | {{=row.city}}, {{=row.country}}</div>
-		<div id='date'>{{=row.start_date}} to {{=row.end_date}}</div>
-		<div id='desc'>{{=row.description}}</div><br />
-		{{pass}}
-		<div id='add-experience-trigger' class='trigger'>Add experience</div>
-		<div id='add-experience'>
-			{{=form2}}
-			<div id='add-experience-trigger2' class='trigger'>Hide Form</div>
-		</div>	
-	</div>	
 
-	<div class='education'>
-	<h4>EDUCATION</h4>
-		{{for row in education:}}
-		<h5>{{=row.degree}}</h5>
-		<div id='place'>{{=row.institute}} | {{=row.city}}, {{=row.country}}</div>
-		<div id='date'>{{=row.start_date}} to {{=row.end_date}}</div>
-		<div id='desc'>{{=row.description}}</div><br />
-		{{pass}}
+<div class="profile">
+	{{if profile:}}
+	{{user=profile.first()}}
 
-	<div id='add-education-trigger' class='trigger'>Add education</div>
-	<div id='add-education'>
-		{{=form3}}
-		<div id='add-education-trigger2' class='trigger'>Hide Form</div>
-	</div>	
-	</div>	
-</div>
-
-<script src="{{=URL('static','js/911_profile.js')}}"></script>
-
-{{else:}}
-
-<div class='user-profile'>
-	{{user = db(db.auth_users.username == request.args(0)).select()}}
-	{{if user:}}
-	{{=user.first().username}}
-	{{else:}}
-	BYE
+	<h3>{{=user.prefix+" "+user.first_name+" "+user.last_name+" "+user.suffix}}</h3>
+	{{if user.email_share_with == "Everyone":}}
+	<div class="email"><span class="label">Email:</span> {{=user.email}}</div>
 	{{pass}}
 
-</div>
+	{{if user.phone_share_with == "Everyone":}}
+	<div class="phone-no"><span class="label">Phone No:</span> {{=user.phone_no}}</div>
+	{{pass}}
 
+	<div class="chat_im"><span class="label">Chat/IM:</span> {{=user.chat_im}}</div>
+	<div class="current-location"><span class="label">Location:</span> {{=user.current_location}}</div>
+	<div class="hometown"><span class="label">Hometown:</span> {{=user.hometown}}</div>
+
+	{{else:}}
+	{{user=user.first()}}
+	<h3>{{=user.first_name+" "+user.last_name}}</h3>
+	<div class="email"><span class="label">Email:</span> {{=user.email}}</div>
+	{{pass}}
+</div>	
+
+
+{{if experience:}}
+<div class='experience'>
+	<h4>EXPERIENCE</h4>
+	{{for row in experience:}}
+	<h5>{{=row.post}}</h5>
+	<div id='place'>{{=row.hospital}} | {{=row.city}}, {{=row.country}}</div>
+	<div id='date'>{{=row.start_date}} to {{=row.end_date}}</div>
+	<div id='desc'>{{=row.description}}</div><br />
+	{{pass}}
+</div>	
+{{pass}}
+
+
+{{if education:}}
+<div class='education'>
+	<h4>EDUCATION</h4>
+	{{for row in education:}}
+	<h5>{{=row.degree}}</h5>
+	<div id='place'>{{=row.institute}} | {{=row.city}}, {{=row.country}}</div>
+	<div id='date'>{{=row.start_date}} to {{=row.end_date}}</div>
+	<div id='desc'>{{=row.description}}</div><br />
+	{{pass}}
+</div>	
+{{pass}}
+
+
+{{else:}}
+<h2>INVALID USERNAME</h2>
 {{pass}}
