@@ -1,6 +1,30 @@
 {{left_sidebar_enabled,right_sidebar_enabled=True,False}}
 {{extend 'layout.html'}}
 
+<h3>Your Connections:</h3>
+
+<ul>
+{{for connection in connections:}}
+
+{{if connection.uid1 != auth.user.username:}}
+{{con_id = connection.uid1}}
+{{else:}}
+{{con_id = connection.uid2}}
+{{pass}}
+{{user_obj = db(db.auth_users.username == con_id).select()}}
+{{profile_obj = db(db.basic_info.username == con_id).select()}}
+{{if profile_obj:}}
+{{user_obj = profile_obj}}
+{{pass}}
+{{user = user_obj.first()}}
+{{uname = user.first_name+" "+user.last_name}}
+{{link = '/911_signin/default/profile/'+con_id}}
+<li>{{=A(uname, _href = link)}}</li>
+
+{{pass}}
+</ul>
+
+<!--
 <h3>H-Pro Net</h3>
 <br />
 <ul>
@@ -18,6 +42,7 @@
 		<li> Error handling </li>
 	</ul>
 </ul>
+-->
 
 {{block left_sidebar}}
 <ul>
@@ -28,6 +53,11 @@
 		<li>{{=A('INBOX', _href='/911_signin/default/inbox')}}<span class='notify'> ({{=ctr}})</span></li>
 		<li>{{=A('Compose Mail', _href='/911_signin/default/compose')}}</li>
 		<li>{{=A('Sent Mail', _href='/911_signin/default/outbox')}}</li>
+	</ul>
+	<h5><li>Events</li></h5>
+	<ul>
+		<li>{{=A('Create Event', _href='/911_signin/default/events')}}</li>
+		<li>{{=A('See all invitations', _href='/911_signin/default/invitations')}}<span class='notify'> ({{=ctr}})</span></li>
 	</ul>
 </ul>
 {{end}}

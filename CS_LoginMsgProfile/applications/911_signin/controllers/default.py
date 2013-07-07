@@ -1,3 +1,4 @@
+import datetime
 # -*- coding: utf-8 -*-
 # this file is released under public domain and you can use without limitations
 
@@ -14,12 +15,12 @@ from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
 
 @auth.requires_login()
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-    """
-    response.flash = "Welcome to web2py!"
-    return dict(message=T('Hello World'))
+
+	query2 = (db.connection.uid1 == auth.user.username)
+	query1 = (db.connection.uid1 == auth.user.username)
+	connections = db(query1).select() | db(query2).select()
+
+	return dict(connections=connections)
 
 
 def user():
@@ -125,7 +126,24 @@ def profile():
 	profile_obj = db(db.basic_info.username == uname).select()
 	exp_obj = db(db.experience.username == uname).select()
 	edu_obj = db(db.education.username == uname).select()
-	return dict(user=user_obj, profile=profile_obj, experience=exp_obj, education=edu_obj)
+
+	query1 = ((db.connection.uid1 == auth.user.username) & (db.connection.uid2 == uname))
+	query2 = ((db.connection.uid2 == auth.user.username) & (db.connection.uid1 == uname))
+	connected = db(query1).select() | db(query2).select()
+	db.connection.uid1.default=auth.user.username
+	db.connection.uid2.default=uname
+	if auth.user.username != uname:
+		if connected:
+			connect_form = None
+		else:
+			connect_form = SQLFORM(db.connection, submit_button='Add Connection')
+			if connect_form.process().accepted:
+				response.flash='Connection added'
+	else:
+		connect_form = None
+
+
+	return dict(user=user_obj, profile=profile_obj, experience=exp_obj, education=edu_obj, connect_form=connect_form)
 
 
 @auth.requires_login()
@@ -181,3 +199,27 @@ def outbox():
 def sent_message():
 	mail = db.message(request.args(0))
 	return dict(mail=mail)
+
+@auth.requires_login()
+def events():
+    	form = SQLFORM(db.events)
+    	if form.accepts(request.vars, session):
+		response.flash = "Event created on " + request.now 
+		row = db(db.auth_users.username).select().first()
+   	return dict(form=form)
+
+def invitations():
+	event = db.events(request.args(0))
+	return dict(event=event)
+'''	row = db(db.auth_users.username == form.vars.reciever).select().first()
+	if row:
+		ctr=row.unread_ctr+1
+		db.auth_users[row.id] = dict(unread_ctr=ctr)
+	return db(db.events.id > 0).select()
+'''
+def case_studies():
+	form=SQLFORM(db.case_studies)
+	if form.accepts(request.vars, session):
+		return dict(form=form)
+def case_studies_result():
+	return db(db.case_studies.id > 0).select()

@@ -1,5 +1,4 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
-
 {{if user:}}
 
 {{extend 'profile_layout.html'}}
@@ -8,7 +7,7 @@
 	{{if profile:}}
 	{{user=profile.first()}}
 
-	<h3>{{=user.prefix+" "+user.first_name+" "+user.last_name+" "+user.suffix}}</h3>
+	<h3>{{=user.prefix+" "+user.first_name+" "+user.last_name+" "+user.suffix}}</h3> {{if connect_form != None:}} {{=connect_form}} {{elif request.args(0) != auth.user.username:}} <div class='connected'>(Connected)</div> {{pass}}
 	{{if user.email_share_with == "Everyone":}}
 	<div class="email"><span class="label">Email:</span> {{=user.email}}</div>
 	{{pass}}
@@ -23,7 +22,7 @@
 
 	{{else:}}
 	{{user=user.first()}}
-	<h3>{{=user.first_name+" "+user.last_name}}</h3>
+	<h3>{{=user.first_name+" "+user.last_name}}</h3> {{if connect_form != None:}} {{=connect_form}} {{elif request.args(0) != auth.user.username:}} <div class='connected'>(Connected)</div> {{pass}}
 	<div class="email"><span class="label">Email:</span> {{=user.email}}</div>
 	{{pass}}
 </div>	

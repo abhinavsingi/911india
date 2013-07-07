@@ -208,3 +208,50 @@ CREATE TABLE profile_pic(
     file CHAR(512)
 );
 success!
+timestamp: 2013-07-04T22:23:27.281854
+CREATE TABLE events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title CHAR(512),
+    City CHAR(512),
+    Country CHAR(512),
+    EventURL CHAR(512),
+    StartsAt TIMESTAMP,
+    EndsAt TIMESTAMP,
+    EventType CHAR(512),
+    Category CHAR(512),
+    Discount CHAR(512),
+    CreatedOn TIMESTAMP,
+    Name CHAR(512),
+    Email CHAR(512)
+);
+success!
+timestamp: 2013-07-04T22:23:27.413630
+CREATE TABLE case_studies(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name CHAR(512),
+    Question TEXT
+);
+success!
+timestamp: 2013-07-05T01:42:07.420680
+ALTER TABLE events ADD event_url CHAR(512);
+timestamp: 2013-07-05T01:42:07.573865
+ALTER TABLE events ADD event_type CHAR(512);
+timestamp: 2013-07-05T01:42:07.713545
+ALTER TABLE events ADD starts_at TIMESTAMP;
+timestamp: 2013-07-05T01:42:07.841814
+ALTER TABLE events ADD ends_at TIMESTAMP;
+timestamp: 2013-07-05T01:42:08.078239
+ALTER TABLE case_studies ADD subject CHAR(512);
+timestamp: 2013-07-05T01:48:42.422013
+ALTER TABLE events ADD created_on TIMESTAMP;
+timestamp: 2013-07-05T04:43:23.000822
+ALTER TABLE events ADD read CHAR(1);
+timestamp: 2013-07-05T04:43:23.118558
+ALTER TABLE events ADD unread_ctr INTEGER;
+timestamp: 2013-07-07T23:31:42.044818
+CREATE TABLE connection(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uid1 CHAR(512),
+    uid2 CHAR(512)
+);
+success!

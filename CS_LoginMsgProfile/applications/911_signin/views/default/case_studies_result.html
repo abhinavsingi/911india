@@ -1,0 +1,11 @@
+<form>
+{{for table in form.components:}}
+	{{for tr in table.components:}}
+		{{for td in tr.components:}}
+			{{for item in td.componets:}}
+				{{=item}}
+			{{pass}}
+		{{pass}}
+	{{pass}}
+{{pass}}
+</form>

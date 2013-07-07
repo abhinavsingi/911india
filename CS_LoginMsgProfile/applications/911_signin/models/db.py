@@ -136,3 +136,27 @@ db.define_table('message',
 db.define_table('profile_pic',
 	Field('uname', readable=False, writable=False),
 	Field('file', 'upload'))
+
+options = [T('Conference'), T('Workshop'), T('Webinar/Pod-cast')]
+
+db.define_table('events', 
+	Field('Title', requires=[IS_NOT_EMPTY(), IS_ALPHANUMERIC()]),
+	Field('City', requires=[IS_NOT_EMPTY(), IS_ALPHANUMERIC()]),
+	Field('Country', requires=[IS_NOT_EMPTY(), IS_ALPHANUMERIC()]),
+	Field('Event_URL', default="http://", requires=IS_URL()),
+	Field('Starts_At', 'datetime', requires=IS_NOT_EMPTY()),
+	Field('Ends_At', 'datetime', requires=IS_NOT_EMPTY()),
+	Field('Event_Type', widget=SQLFORM.widgets.radio.widget, requires=IS_IN_SET(options)),
+	Field('Category', widget=SQLFORM.widgets.options.widget, requires=IS_IN_SET(['Physician/Surgeon', 'Psychiatry', 'Paediatrics', 'Opthalmology', 'OBG', 'Neurology', 'ENT', 'Dermatology', 'Dentistry', 'Nursing', 'Physio Occupational Therapy', 'Audiology/Speech Therapy', 'Alternative Medicine', 'Cardiology', 'Urology', 'Clinical Psychologist'], zero=T('Choose one'))),
+	Field('Discount', widget=SQLFORM.widgets.radio.widget, requires=IS_IN_SET(['Yes', 'No'])),
+	Field('Created_On', 'datetime', writable=False, default = request.now),
+	Field('read', 'boolean', writable=False, readable=False),
+	Field('unread_ctr', 'integer', default=0, writable=False, readable=False))
+
+db.define_table('case_studies',
+	Field('Subject', requires=IS_NOT_EMPTY()),
+	Field('Question', 'text', requires=IS_NOT_EMPTY()))
+
+db.define_table('connection',
+	Field('uid1', readable=False, writable=False),
+	Field('uid2', readable=False, writable=False))
